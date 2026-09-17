@@ -1,9 +1,10 @@
-FROM vllm/vllm-openai:v0.6.3
+﻿FROM vllm/vllm-openai:v0.9.2
 
-# Install latest transformers to support qwen3_5 architectures
-RUN pip install --no-cache-dir -U "transformers>=5.0.0"
+# Pin transformers to 5.16.1 which adds native qwen3_5 architecture support
+# v0.9.2 ships with an older transformers that doesn't know qwen3_5
+RUN pip install --no-cache-dir "transformers==5.16.1"
 
-# Verify the versions in the build log
+# Verify versions in the build log so we always know what's inside
 RUN python3 -c "import vllm, transformers; print(f'vLLM: {vllm.__version__} | Transformers: {transformers.__version__}')"
 
 # Keep the default vLLM entrypoint
